@@ -51,7 +51,7 @@ final class PriceFilterConfigCell: UITableViewCell {
       priceRange.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
       priceRange.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
       priceRange.topAnchor.constraint(equalTo: contentView.layoutMarginsGuide.topAnchor, constant: 15),
-      priceRange.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor)
+      priceRange.bottomAnchor.constraint(equalTo: contentView.layoutMarginsGuide.bottomAnchor),
     ])
 
   }

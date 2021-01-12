@@ -175,6 +175,18 @@ extension FilterSelectionViewController: RangeSeekSliderDelegate {
       selectedFilters[1] = string2
     }
   }
+
+  func didStartTouches(in slider: RangeSeekSlider) {
+    navigationController?.presentationController?.presentedView?.gestureRecognizers?.forEach {
+            $0.isEnabled = false
+    }
+  }
+
+  func didEndTouches(in slider: RangeSeekSlider) {
+    navigationController?.presentationController?.presentedView?.gestureRecognizers?.forEach {
+            $0.isEnabled = true
+    }
+  }
 }
 
 extension FilterSelectionViewController: UIScrollViewDelegate {
