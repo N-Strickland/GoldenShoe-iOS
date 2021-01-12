@@ -158,6 +158,7 @@ extension FilterConfigViewController: FilterSelectionViewControllerDelegate {
     withFilters: [String],
     forType: FilterTypes) {
     selectedFilters[forType] = withFilters
+    productData.filterBy(selectedFilters)
     updateLabels(forType)
   }
 

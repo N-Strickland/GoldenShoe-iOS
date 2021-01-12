@@ -41,6 +41,8 @@ final class HomeScreenViewController: UIViewController {
     didSet {
       if currentSort != nil {
         sortButton.setTitle("SORT ∙", for: .normal)
+      } else {
+        sortButton.setTitle("SORT", for: .normal)
       }
     }
   }
@@ -420,8 +422,14 @@ extension HomeScreenViewController: UISearchBarDelegate {
 
 // MARK: - HomeScreenViewController + SortConfigViewControllerDelegate
 extension HomeScreenViewController: SortConfigViewControllerDelegate {
-  func sortConfig(_ sortConfig: SortConfigViewController, sortFilterSelected: SortTypes) {
-    switch sortFilterSelected {
+  func sortConfig(_ sortConfig: SortConfigViewController, sortFilterSelected: SortTypes?) {
+    guard let sortType = sortFilterSelected else {
+      currentSort = nil
+      productData.sortBy(sortType: nil)
+      updateCollectionView()
+      return
+    }
+    switch sortType {
     case .nameAToZ:
       productData.sortBy(sortType: .nameAToZ)
       currentSort = .nameAToZ

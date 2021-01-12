@@ -15,7 +15,7 @@ enum SortTypes {
 }
 
 protocol SortConfigViewControllerDelegate: class {
-  func sortConfig(_ sortConfig: SortConfigViewController, sortFilterSelected: SortTypes)
+  func sortConfig(_ sortConfig: SortConfigViewController, sortFilterSelected: SortTypes?)
   func sortConfigClearFilters(_ sortConfig: SortConfigViewController)
 }
 
@@ -34,6 +34,8 @@ final class SortConfigViewController: UIViewController {
   weak var delegate: SortConfigViewControllerDelegate?
 
   var currentSort: SortTypes?
+
+  private var lastSelected: SortOptionTableViewCell?
 
   // MARK: - Lifecycle Methods
   override func loadView() {
@@ -65,13 +67,23 @@ final class SortConfigViewController: UIViewController {
 // MARK: - SortConfigViewController + UITableViewDelegate + UITableViewDataSource
 extension SortConfigViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let selectedCell = tableView.cellForRow(at: indexPath) as? SortOptionTableViewCell else { return }
+    guard let selectedCell = tableView.cellForRow(at: indexPath) as?
+            SortOptionTableViewCell else { return }
     selectedCell.isChosen.toggle()
+
+    for index in 0..<4 {
+      guard let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as?
+              SortOptionTableViewCell else { return }
+      if cell.isChosen && cell !== selectedCell {
+        cell.isChosen = false
+      }
+    }
+
     switch indexPath.row {
-    case 0: delegate?.sortConfig(self, sortFilterSelected: .priceLowToHigh)
-    case 1: delegate?.sortConfig(self, sortFilterSelected: .priceHighToLow)
-    case 2: delegate?.sortConfig(self, sortFilterSelected: .nameAToZ)
-    case 3: delegate?.sortConfig(self, sortFilterSelected: .nameZToA)
+    case 0: delegate?.sortConfig(self, sortFilterSelected: selectedCell.isChosen ? .priceLowToHigh : nil)
+    case 1: delegate?.sortConfig(self, sortFilterSelected: selectedCell.isChosen ? .priceHighToLow: nil)
+    case 2: delegate?.sortConfig(self, sortFilterSelected: selectedCell.isChosen ? .nameAToZ: nil)
+    case 3: delegate?.sortConfig(self, sortFilterSelected: selectedCell.isChosen ? .nameZToA: nil)
     default: fatalError("Sort config not implemented")
     }
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
