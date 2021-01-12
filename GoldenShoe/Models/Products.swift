@@ -214,6 +214,7 @@ class Products {
 
   // swiftlint:disable cyclomatic_complexity
   func filterBy(_ filters: [FilterTypes: [String]]) {
+    filteredProducts = products
     for type in FilterTypes.allCases {
       guard let myFilters = filters[type] else { return }
       if !myFilters.isEmpty {

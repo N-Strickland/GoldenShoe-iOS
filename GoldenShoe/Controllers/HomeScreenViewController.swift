@@ -415,6 +415,8 @@ extension HomeScreenViewController: UISearchBarDelegate {
   }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    guard let titleButton = navigationItem.titleView as? UIButton else { return }
+    titleButton.setTitle(filterState.selectedFilter.capitalized, for: .normal)
     productData.filterBy(searchTerm: "")
     updateCollectionView()
   }

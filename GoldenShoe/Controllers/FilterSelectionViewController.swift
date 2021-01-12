@@ -18,6 +18,7 @@ enum FilterTypes: CaseIterable {
 protocol FilterSelectionViewControllerDelegate: class {
   func filterSelectionBackPressed(_: FilterSelectionViewController, withFilters: [String], forType: FilterTypes)
   func filterSelectionViewItemsPressed(_: FilterSelectionViewController, withFilters: [String], forType: FilterTypes)
+  func filterSelectionClearButtonPressed(_ : FilterSelectionViewController, withFilters: [String], forType: FilterTypes)
 }
 
 final class FilterSelectionViewController: UIViewController {
@@ -91,6 +92,7 @@ final class FilterSelectionViewController: UIViewController {
   @objc private func clearButtonPressed() {
     selectedFilters = []
     tableView.reloadData()
+    delegate?.filterSelectionClearButtonPressed(self, withFilters: selectedFilters, forType: filterType)
   }
 }
 

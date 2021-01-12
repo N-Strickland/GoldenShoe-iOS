@@ -65,6 +65,7 @@ final class FilterConfigViewController: UIViewController {
     case .color: tableView.reloadRows(at: [IndexPath(row: 2, section: 0)], with: .automatic)
     case .price: tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .automatic)
     }
+    tableView.reloadRows(at: [IndexPath(row: 3, section: 0)], with: .automatic)
   }
 
   // MARK: - Actions
@@ -92,6 +93,7 @@ extension FilterConfigViewController: UITableViewDataSource, UITableViewDelegate
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
     let cell = FilterSelectionTableViewCell(style: .default, reuseIdentifier: "filterCell")
     switch indexPath.row {
     case 0:
@@ -107,6 +109,8 @@ extension FilterConfigViewController: UITableViewDataSource, UITableViewDelegate
       let filters = selectedFilters[.color]!
       cell.detailLabel.text = filters.isEmpty ? "All" : filters.joined(separator: ", ")
     case 3:
+      print(productData.minProductPrice)
+      print(productData.maxProductPrice)
       cell.filterLabel.text = "Price"
       let filters = selectedFilters[.price]!
       cell.detailLabel.text = filters.isEmpty ? """
@@ -153,6 +157,12 @@ extension FilterConfigViewController: UITableViewDataSource, UITableViewDelegate
 
 // MARK: - FilterConfigViewController + FilterSelectionViewControllerDelegate
 extension FilterConfigViewController: FilterSelectionViewControllerDelegate {
+  func filterSelectionClearButtonPressed(_: FilterSelectionViewController, withFilters: [String], forType: FilterTypes) {
+    selectedFilters[forType] = withFilters
+    productData.filterBy(selectedFilters)
+    updateLabels(forType)
+  }
+
   func filterSelectionBackPressed(
     _: FilterSelectionViewController,
     withFilters: [String],
