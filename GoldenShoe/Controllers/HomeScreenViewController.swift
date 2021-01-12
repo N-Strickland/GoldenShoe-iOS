@@ -305,6 +305,8 @@ extension HomeScreenViewController: UICollectionViewDataSource, UICollectionView
         withReuseIdentifier: "saleCell",
         for: indexPath)
         as? OnSaleStoreItemCollectionViewCell {
+      cell.imageView.image = nil
+
       if let url = URL(string: product.imagesURL.first!) {
         cell.imageView.load(url: url)
       } else {
@@ -327,6 +329,7 @@ extension HomeScreenViewController: UICollectionViewDataSource, UICollectionView
         withReuseIdentifier: "standardCell",
         for: indexPath)
         as? StandardStoreItemCollectionViewCell {
+      cell.imageView.image = nil
       if let url = URL(string: product.imagesURL.first!) {
         cell.imageView.load(url: url)
       } else {
